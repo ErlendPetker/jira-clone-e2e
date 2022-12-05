@@ -1,14 +1,22 @@
 describe('Issue create', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('https://jira.ivorreic.com');
     cy.intercept('GET','**/currentUser').as('currentUserApiRequest')
-    cy.url().should('eq', 'http://34.247.67.214:8080/project').then((url) => {
+    cy.url().should('eq', 'https://jira.ivorreic.com/project/board').then((url) => {
       cy.wait('@currentUserApiRequest')
-      cy.visit(url + '/settings?modal-issue-create=true');
+      cy.visit(url + '/project/settings?modal-issue-create=true');
     });
   });
 
-  it('Should create an issue and validate it successfully', () => {
+  it.only('Should create an issue and validate it successfully', () => {
+
+
+    cy.get('[data-testid="list-issue"]').then(elements=>{
+      const arrayOfElementsTexts = [...elements].map(element => element.innerText)
+      console.table(arrayOfElementsTexts)
+
+    })
+
     cy.get('[data-testid="modal:issue-create"]').within(() => {
       cy.get('[data-testid="select:type"]').click('bottomRight');
       cy.get('[data-testid="select-option:Story"]')
@@ -36,6 +44,8 @@ describe('Issue create', () => {
       cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
       cy.get('[data-testid="icon:story"]').should('be.visible');
     });
+
+    
   });
 
   it('Should validate title is required field if missing', () => {

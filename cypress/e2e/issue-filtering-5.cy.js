@@ -11,13 +11,16 @@
 
 describe('Issue filtering', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('https://jira.ivorreic.com/');
   });
 
   it('Should filter issues by title', () => {
     getSearchInput().debounced('type', 'multiple assignee');
     cy.get('[data-testid="list-issue"]').should('have.length', '1');
   });
+
+
+  
 
   /**
    * New tests can be created here for practice
@@ -28,3 +31,32 @@ describe('Issue filtering', () => {
 
   const getSearchInput = () => cy.get('[data-testid="board-filters"]').find('input');
 });
+
+
+
+
+  describe('Issue filtering', () => {
+    beforeEach(() => {
+      cy.visit('https://jira.ivorreic.com/');
+    });
+  
+    it.only('Should filter issues by title', () => {
+      for ( const element of dataForSearch ) {
+        const getSearchInput = () => cy.get('[data-testid="board-filters"]').find('input');
+        getSearchInput().debounced('type', element);
+      cy.get('[data-testid="list-issue"]').should('have.length', 1);
+      }
+ 
+    });
+  
+  
+    const getSearchInput = () => cy.get('[data-testid="board-filters"]').find('input');
+
+    const dataForSearch = [
+
+      {issueSearch: 'multiple assignees', expectedNumberOfFoundIssues: '1'},
+      {issueSearch: 'an issue', expectedNumberOfFoundIssues: '3'},
+      {issueSearch: 'this', expectedNumberOfFoundIssues: '2'}
+      
+      ];
+  });

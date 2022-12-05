@@ -31,6 +31,8 @@
  * 1. Previously created method will have more selectors included in the object (for example, assignees are added)
  */
 
+ import IssueModalEdit from "../pages/IssueModalEdit.js";
+
 describe('Issue details editing', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -40,34 +42,11 @@ describe('Issue details editing', () => {
     });
   });
 
-  it('Should update type, status, assignees, reporter, priority successfully', () => {
-    getIssueDetailsModal().within(() => {
-      cy.get('[data-testid="select:type"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Story"]')
-          .trigger('mouseover')
-          .trigger('click');
-      cy.get('[data-testid="select:type"]').should('contain', 'Story');
+  it.only('Should update type, status, assignees, reporter, priority successfully', () =>  {
+    IssueModalEdit.updateIssue(); 
+});
 
-      cy.get('[data-testid="select:status"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Done"]').click();
-      cy.get('[data-testid="select:status"]').should('have.text', 'Done');
-
-      cy.get('[data-testid="select:assignees"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Lord Gaben"]').click();
-      cy.get('[data-testid="select:assignees"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Baby Yoda"]').click();
-      cy.get('[data-testid="select:assignees"]').should('contain', 'Baby Yoda');
-      cy.get('[data-testid="select:assignees"]').should('contain', 'Lord Gaben');
-
-      cy.get('[data-testid="select:reporter"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Pickle Rick"]').click();
-      cy.get('[data-testid="select:reporter"]').should('have.text', 'Pickle Rick');
-
-      cy.get('[data-testid="select:priority"]').click('bottomRight');
-      cy.get('[data-testid="select-option:Medium"]').click();
-      cy.get('[data-testid="select:priority"]').should('have.text', 'Medium');
-    });
-  });
+  
 
   it('Should update title, description successfully', () => {
     const title = 'TEST_TITLE';
@@ -111,20 +90,3 @@ describe('Issue details editing', () => {
 
   const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
 });
-
-
-
-const issueDetails = [
-
-  ['[data-testid="select:priority"]', 'Medium'],
-  ['[data-testid="select:type"]', 'Story'],
-  ['[data-testid="select:status"]', 'Done'],
-  ['[data-testid="select:assignees"]', 'Baby Yoda'],
-  ['[data-testid="select:assignees"]', 'Lord Gaben'],
-  ['[data-testid="select:reporter"]', 'Pickle Rick'],
-
-];
-
-const priorities = ["Lowest", "Low", "Medium", "High", "Highest"];
-
-
