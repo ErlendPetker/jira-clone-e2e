@@ -3,9 +3,9 @@ import { faker } from '@faker-js/faker';
 class IssueModal {
     constructor() {
         this.submitButton = 'button[type="submit"]';
-        this.shortDesc= '.jiQqGY';
+        this.shortDesc= '[data-testid="form-field:title]';
         this.shortDescField='[name="title"]'
-        this.errorMessage= '.sc-gisBJw';
+        this.errorMessage= 'div';
         this.randomTitle= faker.word.adjective(5)
         this.issueType='[data-testid="select:type"]';
         this.issuePriority='[data-testid="form-field:priority"]'
@@ -17,6 +17,10 @@ class IssueModal {
         this.issue='[data-testid="list-issue"]';
         this.typePartialSelector='[data-testid="icon:';
         this.board='#root';
+        this.firstIssue = '[data-testid="list-issue"]'
+        this.trashIcon= '[data-testid="icon:trash"]'
+        this.deleteButton = 'button'
+        this.deleteConfirmationModal ='[data-testid="modal:confirm]'
     }
 
     selectIssueType(issueType) {
@@ -50,7 +54,7 @@ class IssueModal {
   
     createIssueNoData() {
             cy.get(this.submitButton).click();
-            cy.get(this.shortDesc).should('have.css', 'border').should('contain', '1px solid rgb(225, 60, 60)')
+            cy.get(this.shortDescField).should('have.css', 'border').should('contain', '1px solid rgb(225, 60, 60)')
             cy.get(this.errorMessage).should('contain', 'This field is required');
     }
 
@@ -78,6 +82,22 @@ createIssueTask3() {
     cy.wait(15000)
     this.ensureFistIssueHasType('Bug');
     
+}
+
+deleteRecentIssue() {
+    cy.visit('jira.ivorreic.com/project/board')
+    cy.get(this.firstIssue).first().click();
+    cy.get(this.trashIcon).click();
+    cy.get(this.deleteButton).contains('Delete issue').click();
+    cy.get(this.deleteConfirmationModal).should('not.exist');
+}
+
+cancelDeletion() {
+    cy.visit('jira.ivorreic.com/project/board');
+    cy.get(this.firstIssue).first().click();
+    cy.get(this.trashIcon).click();
+    cy.get(this.deleteButton).contains('Cancel').click();
+    cy.get(this.deleteConfirmationModal).should('not.exist');
 }
 
 

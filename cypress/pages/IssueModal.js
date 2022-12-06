@@ -8,6 +8,7 @@ class IssueModal {
         this.assignee = '[data-testid="select:userIds"]';
         this.backlogList = '[data-testid="board-list:backlog"]';
         this.issuesList = '[data-testid="list-issue"]';
+       
     }
 
     getIssueModal() {

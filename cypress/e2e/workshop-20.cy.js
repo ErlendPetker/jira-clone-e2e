@@ -10,7 +10,7 @@ describe('workshop 20', () => {
         });
     });
 
-it('TASK1', () => {
+it.only('TASK1', () => {
 
     IssueModal.createIssueNoData(); 
 
