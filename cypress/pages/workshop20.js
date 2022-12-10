@@ -24,6 +24,7 @@ class IssueModal {
         this.stopwatchIcon= '[data-testid="icon:stopwatch"]'
         this.estimateNumber='[placeholder="Number"]'
         this.closeButton='[data-testid="icon:close"]'
+        this.timeTrackingModal='[data-testid="modal:tracking"]'
     }
 
     selectIssueType(issueType) {
@@ -124,6 +125,25 @@ addEditRemoveEstimation() {
     cy.get(this.closeButton).click() // close issue
     cy.get(this.firstIssue).first().click(); //open recent issue again
     cy.get(this.estimateNumber).should('have.value', '')
+
+}
+
+addRemoveLogtime() {
+    cy.visit('jira.ivorreic.com/project/board')
+    cy.get(this.firstIssue).first().click(); //open recent issue
+    cy.get(this.stopwatchIcon).click(); //open time tracking modal
+    cy.get(this.timeTrackingModal).should('be.visible'); //check visibility
+    cy.contains("Time spent (hours)").next().click().type('2{enter}')  //enter time spent 2hr
+    cy.contains("Time remaining (hours)").next().click().type('5{enter}') // enter time remainint 5hr
+    cy.get(this.timeTrackingModal).contains('Done').click() // click done
+
+    cy.get(this.stopwatchIcon).click(); //open time tracking modal
+    cy.get(this.timeTrackingModal).should('be.visible'); //check visibility
+    cy.contains("Time spent (hours)").next().click().clear()  //clear value
+    cy.contains("Time remaining (hours)").next().click().clear() // clear value
+    cy.get(this.timeTrackingModal).contains('Done').click() // click done
+
+
 
 }
 

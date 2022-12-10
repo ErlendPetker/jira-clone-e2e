@@ -18,6 +18,12 @@ describe('workshop 23', () => {
     
     })
 
+    it.only('Add, remove log time', () => {
+
+        IssueModal.addRemoveLogtime(); 
+    
+    })
+
 
 
 })
