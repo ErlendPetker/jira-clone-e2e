@@ -21,6 +21,9 @@ class IssueModal {
         this.trashIcon= '[data-testid="icon:trash"]'
         this.deleteButton = 'button'
         this.deleteConfirmationModal ='[data-testid="modal:confirm]'
+        this.stopwatchIcon= '[data-testid="icon:stopwatch"]'
+        this.estimateNumber='[placeholder="Number"]'
+        this.closeButton='[data-testid="icon:close"]'
     }
 
     selectIssueType(issueType) {
@@ -98,6 +101,30 @@ cancelDeletion() {
     cy.get(this.trashIcon).click();
     cy.get(this.deleteButton).contains('Cancel').click();
     cy.get(this.deleteConfirmationModal).should('not.exist');
+}
+
+addEditRemoveEstimation() {
+    cy.visit('jira.ivorreic.com/project/board')
+    cy.get(this.firstIssue).first().click(); //open recent issue
+    cy.get(this.stopwatchIcon).next().contains('No time logged'); //checks that no spent time is added
+    cy.get(this.estimateNumber).click().type('10{enter}'); // enter 10hr estimated hours
+    cy.wait(1000) 
+    cy.get(this.closeButton).click() // close issue
+    cy.get(this.firstIssue).first().click(); //open recent issue again
+    cy.get(this.estimateNumber).should('have.value', '10') //check that it contains 10hr estimated hours
+
+    cy.get(this.estimateNumber).click().clear().type('20{enter}'); //enter 20hr estimated hours
+    cy.wait(1000)
+    cy.get(this.closeButton).click() // close issue
+    cy.get(this.firstIssue).first().click(); //open recent issue again
+    cy.get(this.estimateNumber).should('have.value', '20') //check that it contains 10hr estimated hours
+
+    cy.get(this.estimateNumber).click().clear() //clear estimation hr value
+    cy.wait(1000)
+    cy.get(this.closeButton).click() // close issue
+    cy.get(this.firstIssue).first().click(); //open recent issue again
+    cy.get(this.estimateNumber).should('have.value', '')
+
 }
 
 
